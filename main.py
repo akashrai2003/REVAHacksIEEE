@@ -1,3 +1,4 @@
+import ast
 import sys
 import xml.etree.ElementTree as ET
 
@@ -10,6 +11,7 @@ class Soldier:
 
     def postfix_to_infix(self, var_value, cloning_var):
         postfix_exp = self.active_condition.split()
+        print(f"Postfix expression list: {postfix_exp}")  # Added for debugging
         s = []
         for token in postfix_exp:
             if token not in {'gt', 'lt', 'eq', 'and', 'or'}:
@@ -34,14 +36,24 @@ class Soldier:
             else:
                 operand2 = stack.pop()
                 operand1 = stack.pop()
-                stack.append(f"({operand1} {token} {operand2})")
+                infix_exp = f"({operand1} {token} {operand2})"
+                print(f"Infix expression: {infix_exp}")  # Added for debugging
+                stack.append(infix_exp)
         
-        return stack.pop()
+        infix_exp = stack.pop()
+        print(f"Final infix expression: {infix_exp}")  # Added for debugging
+        return infix_exp
+
+
 
     def is_active(self, clone_count, cloning_var):
         infix_exp = self.postfix_to_infix(clone_count, cloning_var)
-        result = eval(infix_exp)
-        return result
+        try:
+            result = ast.literal_eval(infix_exp)
+            return result
+        except Exception as e:
+            print("Error evaluating infix expression:", e)
+            return False
 
 class Clan:
     def __init__(self, name, max_cloning_power, cloning_var, base_deploy_cost, soldiers):
@@ -66,12 +78,14 @@ def parse_xml(xml_file_path):
         for clan_node in root.findall("Clan"):
             name = clan_node.find("Name").text
             max_cloning_power = int(clan_node.find("MaxCloningPower").text)
+            print(f"Clan: {name}, Max Cloning Power: {max_cloning_power}")  # Added for debugging
             cloning_var = clan_node.find("CloningVar").text
             base_deploy_cost = int(clan_node.find("BaseDeployCost").text)
             soldiers = []
             for soldier_node in clan_node.findall("Soldier"):
                 soldier_name = soldier_node.find("Name").text
                 active_condition = soldier_node.find("Active").text
+                print(f"Soldier: {soldier_name}, Active Condition: {active_condition}")  # Added for debugging
                 skill_ref = int(soldier_node.find("SkillRef").text)
                 strength = skill_ref  # Assuming strength is based on skill reference
                 soldiers.append(Soldier(soldier_name, active_condition, skill_ref, strength))
@@ -80,33 +94,36 @@ def parse_xml(xml_file_path):
     except Exception as e:
         print("Failed to parse XML file:", e)
 
+
+
 def calculate_strength_within_budget(kingdom, budget):
     max_strength = 0
 
-    for clone_count_a in range(min(kingdom.clans[0].max_cloning_power + 1, budget // kingdom.clans[0].base_deploy_cost + 1)):
-        for clone_count_b in range(min(kingdom.clans[1].max_cloning_power + 1, (budget - clone_count_a * kingdom.clans[0].base_deploy_cost) // kingdom.clans[1].base_deploy_cost + 1)):
-            
-            total_deploy_cost = clone_count_a * kingdom.clans[0].base_deploy_cost + clone_count_b * kingdom.clans[1].base_deploy_cost
+    num_clans = len(kingdom.clans)
+    max_clone_powers = [clan.max_cloning_power for clan in kingdom.clans]
+    
+    def calculate_total_strength(clone_counts):
+        total_strength = 0
+        for i, clan in enumerate(kingdom.clans):
+            for soldier in clan.soldiers:
+                if soldier.is_active(clone_counts[i], clan.cloning_var):
+                    total_strength += soldier.strength * clone_counts[i]
+        return total_strength
 
-            if total_deploy_cost > budget:
-                break
-
-            # Calculate the total strength for this combination
-            total_strength = 0
-            for soldier in kingdom.clans[0].soldiers:
-                if soldier.is_active(clone_count_a, kingdom.clans[0].cloning_var):
-                    total_strength += soldier.strength * clone_count_a
-
-            for soldier in kingdom.clans[1].soldiers:
-                if soldier.is_active(clone_count_b, kingdom.clans[1].cloning_var):
-                    total_strength += soldier.strength * clone_count_b
-
-            print(f"Clone Count A: {clone_count_a}, Clone Count B: {clone_count_b}, Total Strength: {total_strength}")
-
+    def generate_clone_combinations(clone_counts, clan_index):
+        if clan_index == num_clans:
+            nonlocal max_strength
+            total_strength = calculate_total_strength(clone_counts)
             max_strength = max(max_strength, total_strength)
+            return
 
-    return max_strength
+        for clone_count in range(max_clone_powers[clan_index] + 1):
+            clone_counts[clan_index] = clone_count
+            generate_clone_combinations(clone_counts, clan_index + 1)
 
+    generate_clone_combinations([0] * num_clans, 0)
+    
+    return max_strength, max_clone_powers
 
 
 def main():
@@ -119,8 +136,9 @@ def main():
 
     kingdom = parse_xml(xml_file_path)
     if kingdom:
-        max_strength = calculate_strength_within_budget(kingdom, budget)
+        max_strength, max_clone_power = calculate_strength_within_budget(kingdom, budget)
         print("Maximum Strength within Budget:", max_strength)
+        print("Maximum Clone Power per Clan:", max_clone_power)
 
 if __name__ == "__main__":
     main()
