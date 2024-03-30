@@ -11,7 +11,6 @@ class Soldier:
 
     def postfix_to_infix(self, var_value, cloning_var):
         postfix_exp = self.active_condition.split()
-        print(f"Postfix expression list: {postfix_exp}")  # Added for debugging
         s = []
         for token in postfix_exp:
             if token not in {'gt', 'lt', 'eq', 'and', 'or'}:
@@ -34,22 +33,24 @@ class Soldier:
             if token not in {'+', '-', '*', '/', '^', '==', '<', '>', 'and', 'or'}:
                 stack.append(token)
             else:
-                operand2 = stack.pop()
-                operand1 = stack.pop()
-                infix_exp = f"({operand1} {token} {operand2})"
-                print(f"Infix expression: {infix_exp}")  # Added for debugging
-                stack.append(infix_exp)
+                if token in {'+', '-', '*', '/'}:
+                    operand2 = stack.pop()
+                    operand1 = stack.pop()
+                    stack.append(f"({operand1} {token} {operand2})")
+                elif token in {'==', '<', '>', 'and', 'or'}:
+                    operand2 = stack.pop()
+                    operand1 = stack.pop()
+                    stack.append(f"({operand1} {token} {operand2})")
         
-        infix_exp = stack.pop()
-        print(f"Final infix expression: {infix_exp}")  # Added for debugging
-        return infix_exp
+        return stack.pop()
 
 
 
     def is_active(self, clone_count, cloning_var):
         infix_exp = self.postfix_to_infix(clone_count, cloning_var)
+        print("Infix expression:", infix_exp)
         try:
-            result = ast.literal_eval(infix_exp)
+            result = eval(infix_exp)
             return result
         except Exception as e:
             print("Error evaluating infix expression:", e)
