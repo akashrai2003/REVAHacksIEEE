@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Kingdom>
+  <Name>Massachusetts</Name>
+  <Clan>
+    <Int_Class_ID>1</Int_Class_ID>
+    <Name>Kihn, Christiansen and Reichel</Name>
+    <MaxCloningPower>5</MaxCloningPower>
+    <CloningVar>s</CloningVar>
+    <BaseDeployCost>3</BaseDeployCost>
+    <Soldier>
+      <Int_Class_ID>2</Int_Class_ID>
+      <Name>Cleora Gutkowski</Name>
+      <Active>3 s lt 3 s eq and 2 s lt or</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>4</Int_Class_ID>
+      <Name>Autumn McClure</Name>
+      <Active>1 s gt 9 s lt or 0 s eq or</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>5</Int_Class_ID>
+      <Name>Arne Emard</Name>
+      <Active>5 s eq s 4 lt and</Active>
+      <SkillRef>6</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>7</Int_Class_ID>
+      <Name>Jany Gerhold</Name>
+      <Active>s 4 gt 7 s gt or s 2 eq and</Active>
+      <SkillRef>6</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>8</Int_Class_ID>
+      <Name>Alfreda Adams</Name>
+      <Active>9 s lt s 3 lt or 9 s lt and</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+  </Clan>
+  <Skill>
+    <Int_Class_ID>9</Int_Class_ID>
+    <Strength>7</Strength>
+  </Skill>
+  <Skill>
+    <Int_Class_ID>3</Int_Class_ID>
+    <Strength>7</Strength>
+  </Skill>
+  <Skill>
+    <Int_Class_ID>6</Int_Class_ID>
+    <Strength>3</Strength>
+  </Skill>
+</Kingdom>

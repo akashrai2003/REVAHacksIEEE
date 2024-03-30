@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Kingdom>
+  <Name>New Hampshire</Name>
+  <Clan>
+    <Int_Class_ID>1</Int_Class_ID>
+    <Name>Dietrich, Pacocha and Donnelly</Name>
+    <MaxCloningPower>5</MaxCloningPower>
+    <CloningVar>i</CloningVar>
+    <BaseDeployCost>5</BaseDeployCost>
+    <Soldier>
+      <Int_Class_ID>2</Int_Class_ID>
+      <Name>Jasen Funk</Name>
+      <Active>10 i eq</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+  </Clan>
+  <Clan>
+    <Int_Class_ID>4</Int_Class_ID>
+    <Name>Volkman, Klocko and Dooley</Name>
+    <MaxCloningPower>5</MaxCloningPower>
+    <CloningVar>r</CloningVar>
+    <BaseDeployCost>3</BaseDeployCost>
+    <Soldier>
+      <Int_Class_ID>5</Int_Class_ID>
+      <Name>Leanna Torp</Name>
+      <Active>r 3 eq r 7 lt or</Active>
+      <SkillRef>6</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>7</Int_Class_ID>
+      <Name>Margarita Lehner</Name>
+      <Active>r 1 gt</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>8</Int_Class_ID>
+      <Name>Noelia Howe</Name>
+      <Active>r 9 gt 7 r gt and</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>9</Int_Class_ID>
+      <Name>Elroy Predovic</Name>
+      <Active>1 r lt 0 r lt and 0 r gt or</Active>
+      <SkillRef>6</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>10</Int_Class_ID>
+      <Name>Dudley Gusikowski</Name>
+      <Active>r 5 gt r 5 eq or</Active>
+      <SkillRef>6</SkillRef>
+    </Soldier>
+  </Clan>
+  <Clan>
+    <Int_Class_ID>11</Int_Class_ID>
+    <Name>Koepp LLC</Name>
+    <MaxCloningPower>4</MaxCloningPower>
+    <CloningVar>h</CloningVar>
+    <BaseDeployCost>4</BaseDeployCost>
+    <Soldier>
+      <Int_Class_ID>12</Int_Class_ID>
+      <Name>Zane Sanford</Name>
+      <Active>h 3 gt h 3 gt or</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>13</Int_Class_ID>
+      <Name>Emiliano Beahan</Name>
+      <Active>h 5 lt 9 h eq and</Active>
+      <SkillRef>6</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>14</Int_Class_ID>
+      <Name>Miles Quitzon</Name>
+      <Active>h 1 lt</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+  </Clan>
+  <Skill>
+    <Int_Class_ID>3</Int_Class_ID>
+    <Strength>1</Strength>
+  </Skill>
+  <Skill>
+    <Int_Class_ID>6</Int_Class_ID>
+    <Strength>4</Strength>
+  </Skill>
+</Kingdom>

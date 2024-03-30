@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Kingdom>
+    <Name>base_kingdom</Name>
+    <Skill>
+        <Int_Class_ID>1</Int_Class_ID>
+        <Strength>3</Strength>
+    </Skill>
+    <Skill>
+        <Int_Class_ID>2</Int_Class_ID>
+        <Strength>4</Strength>
+    </Skill>
+    <Skill>
+        <Int_Class_ID>3</Int_Class_ID>
+        <Strength>1</Strength>
+    </Skill>
+    <Skill>
+        <Int_Class_ID>4</Int_Class_ID>
+        <Strength>5</Strength>
+    </Skill>
+    <Clan>
+        <Name>clan_a</Name>
+        <MaxCloningPower>2</MaxCloningPower>
+        <CloningVar>x</CloningVar>
+        <BaseDeployCost>5</BaseDeployCost>
+        <Soldier>
+            <Int_Class_ID>5</Int_Class_ID>
+            <Name>p_a</Name>
+            <Active>x 2 eq</Active>
+            <SkillRef>1</SkillRef>
+        </Soldier>
+        <Soldier>
+            <Int_Class_ID>6</Int_Class_ID>
+            <Name>q_a</Name>
+            <Active>x 1 eq</Active>
+            <SkillRef>2</SkillRef>
+        </Soldier>
+    </Clan>
+    <Clan>
+        <Name>clan_b</Name>
+        <MaxCloningPower>3</MaxCloningPower>
+        <CloningVar>y</CloningVar>
+        <BaseDeployCost>7</BaseDeployCost>
+        <Soldier>
+            <Int_Class_ID>7</Int_Class_ID>
+            <Name>p_b</Name>
+            <Active>y 1 gt</Active>
+            <SkillRef>3</SkillRef>
+        </Soldier>
+        <Soldier>
+            <Int_Class_ID>8</Int_Class_ID>
+            <Name>q_b</Name>
+            <Active>y 2 lt</Active>
+            <SkillRef>4</SkillRef>
+        </Soldier>
+    </Clan>
+</Kingdom>

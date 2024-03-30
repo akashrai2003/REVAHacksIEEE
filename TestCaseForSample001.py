@@ -51,6 +51,11 @@ class Clan:
         self.base_deploy_cost = base_deploy_cost
         self.soldiers = soldiers
 
+        # Calculate total strength of the clan
+        self.total_strength = 0
+        for soldier in soldiers:
+            self.total_strength += soldier.strength
+
 class Kingdom:
     def __init__(self, name, clans):
         self.name = name
@@ -83,31 +88,54 @@ def parse_xml(xml_file_path):
 def calculate_strength_within_budget(kingdom, budget):
     max_strength = 0
 
-    for clone_count_a in range(min(kingdom.clans[0].max_cloning_power + 1, budget // kingdom.clans[0].base_deploy_cost + 1)):
-        for clone_count_b in range(min(kingdom.clans[1].max_cloning_power + 1, (budget - clone_count_a * kingdom.clans[0].base_deploy_cost) // kingdom.clans[1].base_deploy_cost + 1)):
-            
-            total_deploy_cost = clone_count_a * kingdom.clans[0].base_deploy_cost + clone_count_b * kingdom.clans[1].base_deploy_cost
+    # Iterate through all possible combinations of cloning variables for both clans
+    for clone_count_clan1 in range(kingdom.clans[0].max_cloning_power + 1):
+        for clone_count_clan2 in range(kingdom.clans[1].max_cloning_power + 1):
+            # Calculate the total deployment cost for this combination
+            total_deploy_cost = clone_count_clan1 * kingdom.clans[0].base_deploy_cost + clone_count_clan2 * kingdom.clans[1].base_deploy_cost
 
+            # Check if the total deployment cost exceeds the budget, if so, break the loop
             if total_deploy_cost > budget:
                 break
 
             # Calculate the total strength for this combination
             total_strength = 0
             for soldier in kingdom.clans[0].soldiers:
-                if soldier.is_active(clone_count_a, kingdom.clans[0].cloning_var):
-                    total_strength += soldier.strength * clone_count_a
+                if soldier.is_active(clone_count_clan1, kingdom.clans[0].cloning_var):
+                    # Multiply the soldier's strength by the cloning count if the soldier is active
+                    total_strength += soldier.strength * clone_count_clan1
 
             for soldier in kingdom.clans[1].soldiers:
-                if soldier.is_active(clone_count_b, kingdom.clans[1].cloning_var):
-                    total_strength += soldier.strength * clone_count_b
+                if soldier.is_active(clone_count_clan2, kingdom.clans[1].cloning_var):
+                    # Multiply the soldier's strength by the cloning count if the soldier is active
+                    total_strength += soldier.strength * clone_count_clan2
 
-            print(f"Clone Count A: {clone_count_a}, Clone Count B: {clone_count_b}, Total Strength: {total_strength}")
-
+            # Update max_strength if the total strength for this combination is higher
             max_strength = max(max_strength, total_strength)
 
     return max_strength
 
+def create_xml_output(kingdom, budget):
+    kingdom_element = ET.Element("Kingdom")
+    ET.SubElement(kingdom_element, "Name").text = kingdom.name
+    ET.SubElement(kingdom_element, "Budget").text = str(budget)
 
+    clans_element = ET.SubElement(kingdom_element, "Clans")
+    for clan in kingdom.clans:
+        clan_element = ET.SubElement(clans_element, "Clan")
+        ET.SubElement(clan_element, "Name").text = clan.name
+        ET.SubElement(clan_element, "MaxCloningPower").text = str(clan.max_cloning_power)
+        ET.SubElement(clan_element, "CloningVar").text = clan.cloning_var
+        ET.SubElement(clan_element, "BaseDeployCost").text = str(clan.base_deploy_cost)
+        soldiers_element = ET.SubElement(clan_element, "Soldiers")
+        for soldier in clan.soldiers:
+            soldier_element = ET.SubElement(soldiers_element, "Soldier")
+            ET.SubElement(soldier_element, "Name").text = soldier.name
+            ET.SubElement(soldier_element, "ActiveCondition").text = soldier.active_condition
+            ET.SubElement(soldier_element, "SkillRef").text = str(soldier.skill_ref)
+            ET.SubElement(soldier_element, "Strength").text = str(soldier.strength)
+
+    return kingdom_element
 
 def main():
     if len(sys.argv) < 3:
@@ -121,6 +149,12 @@ def main():
     if kingdom:
         max_strength = calculate_strength_within_budget(kingdom, budget)
         print("Maximum Strength within Budget:", max_strength)
+
+        # Generate XML output
+        kingdom_xml_element = create_xml_output(kingdom, budget)
+        tree = ET.ElementTree(kingdom_xml_element)
+        with open('kingdom_output.xml', 'wb') as f:
+            tree.write(f, encoding='utf-8', xml_declaration=True)
 
 if __name__ == "__main__":
     main()

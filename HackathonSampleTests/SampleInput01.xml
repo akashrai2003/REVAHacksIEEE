@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Kingdom>
+  <Name>West Virginia</Name>
+  <Clan>
+    <Int_Class_ID>1</Int_Class_ID>
+    <Name>Heidenreich - McCullough</Name>
+    <MaxCloningPower>3</MaxCloningPower>
+    <CloningVar>q</CloningVar>
+    <BaseDeployCost>3</BaseDeployCost>
+    <Soldier>
+      <Int_Class_ID>2</Int_Class_ID>
+      <Name>Alisha Gerhold</Name>
+      <Active>q 3 eq q 2 lt and q 4 lt and</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+    <Soldier>
+      <Int_Class_ID>4</Int_Class_ID>
+      <Name>Connor Crooks</Name>
+      <Active>q 3 gt q 7 gt or</Active>
+      <SkillRef>3</SkillRef>
+    </Soldier>
+  </Clan>
+  <Skill>
+    <Int_Class_ID>3</Int_Class_ID>
+    <Strength>10</Strength>
+  </Skill>
+</Kingdom>
